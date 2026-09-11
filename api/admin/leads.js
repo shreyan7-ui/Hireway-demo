@@ -1,0 +1,3 @@
+import { db } from 'hatchable';
+export const access='admin'; export const methods=['GET','PATCH'];
+export default async function(req,res){if(req.method==='PATCH'){const {id,status}=req.body||{};await db.query('UPDATE leads SET status=$1 WHERE id=$2',[status,id]);return res.json({success:true})}const {rows}=await db.query('SELECT id,name,email,company,model,message,status,created_at FROM leads ORDER BY created_at DESC LIMIT 100');res.json(rows)}

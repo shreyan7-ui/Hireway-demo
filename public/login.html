@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Sign in | ElevateBridge</title>
+    <link rel="stylesheet" href="/assets/styles.css">
+</head>
+
+<body>
+    <main style="min-height:100vh;display:grid;place-items:center;padding:30px">
+        <div class="card" style="width:min(460px,100%)"><a class="brand" href="/">Elevate<span>Bridge</span></a>
+            <h1 style="font-size:38px;letter-spacing:-2px">Welcome back.</h1>
+            <p style="color:var(--muted)">Sign in securely with a one-time email code.</p>
+            <form id="login" class="form"><input id="email" type="email" placeholder="Work email"
+                    autocomplete="username webauthn" required><input id="code" inputmode="numeric"
+                    placeholder="6-digit code" style="display:none"><button class="btn primary"
+                    id="submit">Continue</button>
+                <div id="msg" class="notice"></div>
+            </form>
+        </div>
+    </main>
+    <script>const A = window.hatchable.auth; let step = 'email'; let address = ''; document.getElementById('login').onsubmit = async e => { e.preventDefault(); const msg = document.getElementById('msg'); msg.style.display = 'none'; try { if (step === 'email') { address = document.getElementById('email').value; const r = await A.startLogin({ email: address }); if (r.has_passkey && A.supportsPasskeys()) { try { const x = await A.signInWithPasskey({ email: address }); location.href = new URLSearchParams(location.search).get('next') || '/admin/'; return } catch { } } document.getElementById('code').style.display = 'block'; document.getElementById('code').required = true; document.getElementById('submit').textContent = 'Sign in'; step = 'code'; } else { await A.verifyCode({ email: address, code: document.getElementById('code').value }); location.href = new URLSearchParams(location.search).get('next') || '/'; } } catch (err) { msg.textContent = err.message || 'Unable to sign in. Please try again.'; msg.style.display = 'block' } }</script>
+</body>
+
+</html>

@@ -1,0 +1,3 @@
+import { db } from 'hatchable';
+export const access='admin'; export const methods=['GET','PATCH'];
+export default async function(req,res){if(req.method==='PATCH'){const {id,status}=req.body||{};if(!id||!status)return res.status(400).json({error:'id and status are required'});await db.query('UPDATE resource_requests SET status=$1 WHERE id=$2',[status,id]);return res.json({success:true})}const {rows}=await db.query('SELECT id,company,contact_name,email,phone,resource_name,resource_id,request_type,priority,subject,details,status,created_at FROM resource_requests ORDER BY created_at DESC LIMIT 100');res.json(rows)}

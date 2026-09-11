@@ -1,0 +1,7 @@
+[auth]
+enabled = true
+providers = ["email"]
+
+[[secret]]
+name = "ADMIN_NOTE"
+expose = false

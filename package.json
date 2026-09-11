@@ -1,0 +1,7 @@
+{
+  "name": "elevatebridge-it-local",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local development server for ElevateBridge IT Services",
+  "scripts": {"dev":"node dev-server.js","start":"node dev-server.js"}
+}
