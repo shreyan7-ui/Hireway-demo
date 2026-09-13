@@ -1,1 +1,169 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Client Resource Desk | ElevateBridge</title><meta name="description" content="Raise a service request for an ElevateBridge resource or engagement."><link rel="stylesheet" href="/assets/styles.css"></head><body><nav class="nav"></nav><section class="hero supporthero"><div class="wrap"><div class="eyebrow reveal">Client resource desk</div><h1>Something around your hired resource needs attention.</h1><p>Open one ticket for delivery issues, replacement needs, availability, onboarding, billing or contract questions. We’ll route it to the right ElevateBridge team.</p><div class="supportchips reveal"><span>Resource support</span><span>Priority handling</span><span>Enterprise response</span><span>C2C · C2H · FTE</span></div></div></section><section><div class="wrap"><div class="contactgrid"><div class="copy"><div class="eyebrow reveal">How this works</div><h2 class="reveal">One ticket. One clear trail.</h2><p class="reveal">Use this desk for any resource already engaged through ElevateBridge. Add the resource name or ID whenever possible so the operations team can identify the engagement quickly.</p><div class="step-list"><div class="step reveal"><b>01</b><div><strong>Identify the engagement</strong><span>Company, contact and resource details.</span></div></div><div class="step reveal"><b>02</b><div><strong>Choose the issue</strong><span>Delivery, replacement, availability, onboarding or commercial support.</span></div></div><div class="step reveal"><b>03</b><div><strong>Set the priority</strong><span>Critical, High, Medium or Low depending on business impact.</span></div></div></div></div><form class="form requestform reveal" id="resourceForm"><div class="section-kicker">Raise a support ticket</div><div class="formrow"><input name="company" placeholder="Company name" required><input name="contact_name" placeholder="Your name" required></div><input name="email" type="email" placeholder="Work email" required><input name="phone" placeholder="Phone number"><div class="formrow"><input name="resource_name" placeholder="Resource name"><input name="resource_id" placeholder="Resource / CV ID"></div><select name="request_type" required><option value="">Request type</option><option>Resource replacement</option><option>Performance / delivery</option><option>Attendance / availability</option><option>Onboarding / access</option><option>Timesheet / billing</option><option>PO / contract</option><option>Other</option></select><select name="priority"><option>Medium</option><option>High</option><option>Critical</option><option>Low</option></select><input name="subject" placeholder="Request subject" required><textarea name="details" placeholder="Describe the issue, impact and what outcome you need" required></textarea><button class="btn primary" type="submit">Raise support ticket ↗</button><div class="notice" id="requestNotice"></div></form></div></div></section><section class="dark"><div class="wrap"><div class="banner tilt reveal"><div class="eyebrow">Need a new resource instead?</div><h2>Tell us the role and we’ll build a shortlist.</h2><p>For a new hiring requirement, use the main requirement desk instead of the resource support queue.</p><a class="btn" style="background:white;color:#07111f" href="/contact">Raise hiring requirement ↗</a></div></div></section><div class="footer"></div><script src="/assets/app.js"></script><script>document.addEventListener('DOMContentLoaded',()=>{const f=document.querySelector('#resourceForm');if(!f)return;f.addEventListener('submit',async e=>{e.preventDefault();const button=f.querySelector('button');const n=document.querySelector('#requestNotice');n.style.display='none';button.disabled=true;button.textContent='Sending ticket…';const body=Object.fromEntries(new FormData(f));try{const r=await fetch((window.__HATCHABLE__?.api||'/api')+'/resource-requests',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||`Unable to submit request (${r.status})`);n.textContent='Ticket '+String(d.request.id).slice(0,8).toUpperCase()+' received. Our team will follow up shortly.';n.style.display='block';f.reset()}catch(err){n.textContent=err.message||'Something went wrong. Please try again.';n.style.display='block'}finally{button.disabled=false;button.textContent='Raise support ticket ↗'}})})</script></body></html>
+<!doctype html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Client Resource Desk | ElevateBridge</title>
+    <meta name="description" content="Raise a service request for an ElevateBridge resource or engagement.">
+    <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+    <nav class="nav"></nav>
+
+```
+<section class="hero supporthero">
+    <div class="wrap">
+        <div class="eyebrow reveal">Client resource desk</div>
+        <h1>Something around your hired resource needs attention.</h1>
+        <p>Open one ticket for delivery issues, replacement needs, availability, onboarding, billing or contract questions. We’ll route it to the right ElevateBridge team.</p>
+        <div class="supportchips reveal">
+            <span>Resource support</span>
+            <span>Priority handling</span>
+            <span>Enterprise response</span>
+            <span>C2C · C2H · FTE</span>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="wrap">
+        <div class="contactgrid">
+            <div class="copy">
+                <div class="eyebrow reveal">How this works</div>
+                <h2 class="reveal">One ticket. One clear trail.</h2>
+                <p class="reveal">Use this desk for any resource already engaged through ElevateBridge. Add the resource name or ID whenever possible so the operations team can identify the engagement quickly.</p>
+
+                <div class="step-list">
+                    <div class="step reveal">
+                        <b>01</b>
+                        <div>
+                            <strong>Identify the engagement</strong>
+                            <span>Company, contact and resource details.</span>
+                        </div>
+                    </div>
+                    <div class="step reveal">
+                        <b>02</b>
+                        <div>
+                            <strong>Choose the issue</strong>
+                            <span>Delivery, replacement, availability, onboarding or commercial support.</span>
+                        </div>
+                    </div>
+                    <div class="step reveal">
+                        <b>03</b>
+                        <div>
+                            <strong>Set the priority</strong>
+                            <span>Critical, High, Medium or Low depending on business impact.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form class="form requestform reveal" id="resourceForm">
+                <div class="section-kicker">Raise a support ticket</div>
+
+                <div class="formrow">
+                    <input name="company" placeholder="Company name" required>
+                    <input name="contact_name" placeholder="Your name" required>
+                </div>
+
+                <input name="email" type="email" placeholder="Work email" required>
+                <input name="phone" placeholder="Phone number">
+
+                <div class="formrow">
+                    <input name="resource_name" placeholder="Resource name">
+                    <input name="resource_id" placeholder="Resource / CV ID">
+                </div>
+
+                <select name="request_type" required>
+                    <option value="">Request type</option>
+                    <option>Resource replacement</option>
+                    <option>Performance / delivery</option>
+                    <option>Attendance / availability</option>
+                    <option>Onboarding / access</option>
+                    <option>Timesheet / billing</option>
+                    <option>PO / contract</option>
+                    <option>Other</option>
+                </select>
+
+                <select name="priority">
+                    <option>Medium</option>
+                    <option>High</option>
+                    <option>Critical</option>
+                    <option>Low</option>
+                </select>
+
+                <input name="subject" placeholder="Request subject" required>
+
+                <textarea name="details" placeholder="Describe the issue, impact and what outcome you need" required></textarea>
+
+                <button class="btn primary" type="submit">Raise support ticket ↗</button>
+                <div class="notice" id="requestNotice"></div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="dark">
+    <div class="wrap">
+        <div class="banner tilt reveal">
+            <div class="eyebrow">Need a new resource instead?</div>
+            <h2>Tell us the role and we’ll build a shortlist.</h2>
+            <p>For a new hiring requirement, use the main requirement desk instead of the resource support queue.</p>
+            <a class="btn" style="background:white;color:#07111f" href="/contact">Raise hiring requirement ↗</a>
+        </div>
+    </div>
+</section>
+
+<div class="footer"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const f = document.querySelector('#resourceForm');
+        if (!f) return;
+
+        f.addEventListener('submit', async e => {
+            e.preventDefault();
+
+            const button = f.querySelector('button');
+            const n = document.querySelector('#requestNotice');
+
+            n.style.display = 'none';
+            button.disabled = true;
+            button.textContent = 'Sending ticket…';
+
+            const body = Object.fromEntries(new FormData(f));
+
+            try {
+                const r = await fetch((window.__HATCHABLE__?.api || '/api') + '/resource-requests', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const d = await r.json().catch(() => ({}));
+
+                if (!r.ok) {
+                    throw new Error(d.error || `Unable to submit request (${r.status})`);
+                }
+
+                n.textContent = 'Ticket ' + String(d.request.id).slice(0, 8).toUpperCase() + ' received. Our team will follow up shortly.';
+                n.style.display = 'block';
+                f.reset();
+            } catch (err) {
+                n.textContent = err.message || 'Something went wrong. Please try again.';
+                n.style.display = 'block';
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Raise support ticket ↗';
+            }
+        });
+    });
+</script>
+```
+
+</body>
+</html>

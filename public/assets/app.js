@@ -24,7 +24,6 @@ function nav() {
     `;
 }
 
-
 /* =========================================================
    FOOTER
    ========================================================= */
@@ -44,7 +43,6 @@ function foot() {
     `;
 }
 
-
 /* =========================================================
    GLOBAL NAV + FOOTER
    ========================================================= */
@@ -58,7 +56,6 @@ function shell() {
     });
 }
 
-
 /* =========================================================
    SCROLL REVEAL ANIMATION
    ========================================================= */
@@ -69,7 +66,6 @@ function reveal() {
     if (!elements.length) {
         return;
     }
-
     const observer = new IntersectionObserver(
         entries => {
             entries.forEach(entry => {
@@ -83,12 +79,10 @@ function reveal() {
             threshold: 0.12
         }
     );
-
     elements.forEach(element => {
         observer.observe(element);
     });
 }
-
 
 /* =========================================================
    3D CARD TILT
@@ -96,16 +90,12 @@ function reveal() {
 
 function tilt() {
     document.querySelectorAll('.tilt').forEach(card => {
-
         card.addEventListener('pointermove', event => {
             const rect = card.getBoundingClientRect();
-
             const px =
                 (event.clientX - rect.left) / rect.width - 0.5;
-
             const py =
                 (event.clientY - rect.top) / rect.height - 0.5;
-
             card.style.transform = `
                 perspective(900px)
                 rotateX(${py * -5}deg)
@@ -113,7 +103,6 @@ function tilt() {
                 translateY(-5px)
             `;
         });
-
         card.addEventListener('pointerleave', () => {
             card.style.transform = '';
         });
@@ -121,89 +110,73 @@ function tilt() {
     });
 }
 
-
 /* =========================================================
    FLOATING HERO OBJECTS
    ========================================================= */
 
 function floatingObjects() {
-    const hero = document.querySelector('.hero');
 
+    const hero = document.querySelector('.hero');
     if (!hero) {
         return;
     }
     const layer = document.createElement('div');
-
     layer.className = 'float-layer';
-
     layer.innerHTML = `
         <span
             class="orb orb-a"
             data-float=".025">
         </span>
-
         <span
             class="orb orb-b"
             data-float=".055">
         </span>
-
         <span
             class="cube cube-a"
             data-float=".04">
             EB
         </span>
-
         <span
             class="ring ring-a"
             data-float=".07">
         </span>
-
         <span
             class="dot-grid"
             data-float=".03">
         </span>
-
         <span
             class="mini-cube mini-cube-a"
             data-float=".035">
             &lt;/&gt;
         </span>
-
         <span
             class="mini-cube mini-cube-b"
             data-float=".05">
             AI
         </span>
-
         <span
             class="float-pill pill-a"
             data-float=".025">
             CLOUD
         </span>
-
         <span
             class="float-pill pill-b"
             data-float=".045">
             DATA
         </span>
-
         <span
             class="node node-a"
             data-float=".06">
         </span>
-
         <span
             class="node node-b"
             data-float=".035">
         </span>
-
         <span class="node-line line-a"></span>
-
         <span class="node-line line-b"></span>
     `;
 
     hero.appendChild(layer);
-
 
     /* Mouse movement */
 
@@ -221,12 +194,10 @@ function floatingObjects() {
             )
         `;
     });
-
     hero.addEventListener('pointerleave', () => {
         layer.style.transform = '';
     });
 }
-
 
 /* =========================================================
    SCROLL PARALLAX + FLOATING MOTION
@@ -243,7 +214,6 @@ function scrollMotion() {
         document.querySelectorAll('.parallax').forEach(element => {
             const speed =
                 Number(element.dataset.speed || 0.12);
-
             element.style.transform = `
                 translate3d(
                     0,
@@ -253,25 +223,20 @@ function scrollMotion() {
             `;
         });
 
-
         /* Floating objects */
-
         document.querySelectorAll('[data-float]').forEach(
             (element, index) => {
 
                 const speed =
                     Number(element.dataset.float || 0.04);
-
                 const drift =
                     Math.sin(
                         window.scrollY * 0.008 + index
                     ) * 10;
-
                 const rotation =
                     Math.sin(
                         window.scrollY * 0.004 + index
                     ) * 2;
-
                 element.style.transform = `
                     translate3d(
                         ${drift}px,
@@ -286,26 +251,20 @@ function scrollMotion() {
         ticking = false;
     };
 
-
     window.addEventListener(
         'scroll',
         () => {
-
             if (!ticking) {
                 requestAnimationFrame(update);
                 ticking = true;
             }
-
         },
         {
             passive: true
         }
     );
-
-
     update();
 }
-
 
 /* =========================================================
    CONTACT / LEAD FORM
@@ -313,56 +272,40 @@ function scrollMotion() {
 
 function setupLeadForm() {
     const form = document.querySelector('#leadForm');
-
-    if (!form) {
+   if (!form) {
         return;
     }
-
     form.addEventListener('submit', async event => {
-
         event.preventDefault();
-
         const body =
             Object.fromEntries(
                 new FormData(form)
             );
-
         const notice =
             document.querySelector('#notice');
-
         try {
-
             const response = await fetch(
                 API + '/leads',
                 {
                     method: 'POST',
-
                     headers: {
                         'Content-Type': 'application/json'
                     },
-
                     body: JSON.stringify(body)
                 }
             );
-
             if (!response.ok) {
                 throw new Error('Lead submission failed');
             }
-
             notice.style.display = 'block';
-
             form.reset();
-
         } catch (error) {
-
             notice.textContent =
                 'Something went wrong. Please try again.';
-
             notice.style.display = 'block';
         }
     });
 }
-
 
 /* =========================================================
    CAREERS / JOB LIST
@@ -370,26 +313,20 @@ function setupLeadForm() {
 
 function setupJobs() {
     const jobs = document.querySelector('#jobs');
-
     if (!jobs) {
         return;
     }
-
     fetch(API + '/jobs')
         .then(response => response.json())
         .then(data => {
-
             jobs.innerHTML = data
                 .map(job => {
-
                     return `
                         <div class="job tilt reveal">
-
                             <div>
                                 <h3>
                                     ${job.title}
                                 </h3>
-
                                 <small>
                                     ${job.department}
                                     ·
@@ -397,28 +334,22 @@ function setupJobs() {
                                     ·
                                     ${job.employment_type}
                                 </small>
-
                                 <p>
                                     ${job.description}
                                 </p>
                             </div>
-
                             <a
                                 class="btn primary"
                                 href="/contact?role=${encodeURIComponent(job.title)}"
                             >
                                 Apply / Enquire
                             </a>
-
                         </div>
                     `;
-
                 })
                 .join('');
-
         })
         .catch(() => {
-
             jobs.innerHTML = `
                 <p>
                     Roles will be published here soon.
@@ -428,25 +359,16 @@ function setupJobs() {
         });
 }
 
-
 /* =========================================================
    PAGE INITIALIZATION
    ========================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
-
     shell();
-
     reveal();
-
     tilt();
-
     floatingObjects();
-
     scrollMotion();
-
     setupLeadForm();
-
     setupJobs();
-
 });

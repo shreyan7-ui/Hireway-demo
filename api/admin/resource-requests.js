@@ -1,3 +1,29 @@
 import { db } from 'hatchable';
-export const access='admin'; export const methods=['GET','PATCH'];
-export default async function(req,res){if(req.method==='PATCH'){const {id,status}=req.body||{};if(!id||!status)return res.status(400).json({error:'id and status are required'});await db.query('UPDATE resource_requests SET status=$1 WHERE id=$2',[status,id]);return res.json({success:true})}const {rows}=await db.query('SELECT id,company,contact_name,email,phone,resource_name,resource_id,request_type,priority,subject,details,status,created_at FROM resource_requests ORDER BY created_at DESC LIMIT 100');res.json(rows)}
+
+export const access = 'admin';
+export const methods = ['GET'];
+
+export default async function(req, res) {
+  const a = await db.query(
+    'SELECT count(*)::int AS count FROM leads'
+  );
+
+  const b = await db.query(
+    'SELECT count(*)::int AS count FROM leads WHERE status = \'new\''
+  );
+
+  const c = await db.query(
+    'SELECT count(*)::int AS count FROM jobs WHERE active = true'
+  );
+
+  const d = await db.query(
+    'SELECT count(*)::int AS count FROM applications'
+  );
+
+  res.json({
+    leads: a.rows[0].count,
+    new_leads: b.rows[0].count,
+    active_jobs: c.rows[0].count,
+    applications: d.rows[0].count
+  });
+}

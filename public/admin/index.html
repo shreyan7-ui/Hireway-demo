@@ -1,30 +1,36 @@
 <!doctype html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Admin | ElevateBridge</title>
     <link rel="stylesheet" href="/assets/styles.css">
 </head>
-
 <body class="admin">
+
     <div class="adminnav">
-        <div class="wrap adminbar"><b>ElevateBridge Admin</b><a href="/">← Website</a></div>
+        <div class="wrap adminbar">
+            <b>ElevateBridge Admin</b>
+            <a href="/">← Website</a>
+        </div>
     </div>
+
     <main class="wrap dash">
         <div class="head">
             <div class="eyebrow">Operations</div>
             <h1>Dashboard</h1>
             <p>Lead and delivery overview for authorized administrators.</p>
         </div>
+
         <div id="authmsg" class="card">Checking administrator access…</div>
+
         <div class="dashcards" id="cards" style="display:none">
             <div class="dashcard"><b id="leads">—</b><br>All leads</div>
             <div class="dashcard"><b id="new">—</b><br>New leads</div>
             <div class="dashcard"><b id="jobs">—</b><br>Active jobs</div>
             <div class="dashcard"><b id="apps">—</b><br>Applications</div>
         </div>
+
         <div class="table" id="leadTable" style="display:none">
             <table>
                 <thead>
@@ -40,7 +46,62 @@
             </table>
         </div>
     </main>
-    <script>(async () => { const A = window.__HATCHABLE__?.api || '/api'; try { const r = await fetch(A + '/admin/dashboard'); if (r.status === 403 || r.status === 401) { document.getElementById('authmsg').innerHTML = '<b>Administrator access required.</b><p>Sign in with the project owner/admin account to use this dashboard.</p>'; return } if (!r.ok) throw 0; const d = await r.json(); document.getElementById('authmsg').style.display = 'none'; document.getElementById('cards').style.display = 'grid'; for (const [id, key] of [['leads', 'leads'], ['new', 'new_leads'], ['jobs', 'active_jobs'], ['apps', 'applications']]) document.getElementById(id).textContent = d[key]; const x = await fetch(A + '/admin/leads'); if (x.ok) { const rows = await x.json(); document.getElementById('leadTable').style.display = 'block'; document.getElementById('rows').innerHTML = rows.map(v => `<tr><td><b>${v.name}</b><br>${v.email}</td><td>${v.company || '—'}</td><td><span class="pill">${v.model || '—'}</span></td><td>${v.status}</td><td>${new Date(v.created_at).toLocaleDateString()}</td></tr>`).join('') } } catch (e) { document.getElementById('authmsg').innerHTML = '<b>Dashboard unavailable.</b><p>Please try again.</p>' } })()</script>
-</body>
 
+    <script>
+        (async () => {
+            const A = window.__HATCHABLE__?.api || '/api';
+
+            try {
+                const r = await fetch(A + '/admin/dashboard');
+
+                if (r.status === 403 || r.status === 401) {
+                    document.getElementById('authmsg').innerHTML =
+                        '<b>Administrator access required.</b><p>Sign in with the project owner/admin account to use this dashboard.</p>';
+                    return;
+                }
+
+                if (!r.ok) throw new Error('Dashboard request failed');
+
+                const d = await r.json();
+
+                document.getElementById('authmsg').style.display = 'none';
+                document.getElementById('cards').style.display = 'grid';
+
+                for (const [id, key] of [
+                    ['leads', 'leads'],
+                    ['new', 'new_leads'],
+                    ['jobs', 'active_jobs'],
+                    ['apps', 'applications']
+                ]) {
+                    document.getElementById(id).textContent = d[key];
+                }
+
+                const x = await fetch(A + '/admin/leads');
+
+                if (x.ok) {
+                    const rows = await x.json();
+
+                    document.getElementById('leadTable').style.display = 'block';
+
+                    document.getElementById('rows').innerHTML = rows.map(v => `
+                        <tr>
+                            <td><b>${v.name}</b><br>${v.email}</td>
+                            <td>${v.company || '—'}</td>
+                            <td><span class="pill">${v.model || '—'}</span></td>
+                            <td>${v.status}</td>
+                            <td>${new Date(v.created_at).toLocaleDateString()}</td>
+                        </tr>
+                    `).join('');
+                }
+
+            } catch (e) {
+                document.getElementById('authmsg').innerHTML =
+                    '<b>Dashboard unavailable.</b><p>Please try again.</p>';
+
+                console.error('Admin dashboard error:', e);
+            }
+        })();
+    </script>
+
+</body>
 </html>
